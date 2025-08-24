@@ -1,0 +1,47 @@
+name: 2. Deploy-HUBConnectionForPerimeterLandingZone
+
+on:
+    workflow_dispatch:
+
+env:
+    LOCATION: "canadacentral"
+    SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+    Deploy-HUBConnectionForPerimeterLandingZone:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+
+            - name: Azure Login
+              uses: azure/login@v2
+              with:
+                client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                subscription-id: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+
+            - name: Set Az Context
+              uses: azure/cli@v2
+              with:
+                azcliversion: latest
+                inlineScript: |
+                    az account set --subscription ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+                    az account show
+
+            - name: Deploy Perimeter Landing Zone
+              uses: azure/cli@v2
+              with:
+                azcliversion: latest
+                inlineScript: |
+                    az deployment sub create \
+                        --name "Deploy_vHUBConnForPerimeterLandingZone" \
+                        --location $LOCATION \
+                        --template-file modules/perimeterZoneHUBConn.bicep \
+                        --parameters config/perimeterZone/perimeterZoneHUBPeering.bicepparam
