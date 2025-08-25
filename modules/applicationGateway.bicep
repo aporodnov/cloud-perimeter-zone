@@ -11,6 +11,7 @@ resource RG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
 param PubIPName string
 
 module PublicIP 'publicIPaddress.bicep' = {
+  name: 'DeployPubIP'
   scope: RG
   params: {
     location: location 
@@ -29,6 +30,7 @@ param requestRoutingRules array
 param httpListeners array
 
 module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
+  name: 'DeployAppGW'
   scope: RG
   params: {
     name: AppGWName
