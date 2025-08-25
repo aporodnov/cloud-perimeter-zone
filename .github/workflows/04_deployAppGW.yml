@@ -42,5 +42,5 @@ jobs:
                     az deployment sub create \
                         --name "Deploy_AppGateway" \
                         --location $LOCATION \
-                        --template-file modules/applicationGateway.bicep \
-                        --parameters config/appGW/AppGW01.bicepparam
+                        --template-file modules/appGWplainDeployment.bicep \
+                        --parameters config/appGW/AppGW01plain.bicepparam
