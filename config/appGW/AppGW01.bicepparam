@@ -25,8 +25,10 @@ param gatewayIPConfigurations = [
 
 param frontendPorts = [
   {
-    name: 'appgw01-feport'
-    port: 80
+    name: 'appgw01-feport80'
+    properties: {
+      port: 80
+    }
   }
 ]
 
@@ -74,7 +76,7 @@ param httpListeners = [
         id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/Public'
       }
       frontendPort: {
-        id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport'
+        id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport80'
       } 
       protocol: 'Http'
       hostNames: []
