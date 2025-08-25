@@ -9,6 +9,7 @@ param WAFPolicyResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090
 var varAppGWName = AppGWName
 var varSubscriptionID = 'f638c48a-5d9a-44cc-ae87-de50507a6090'
 var varRGName = RGName
+var varPubIPName = PubIPName
 var varAppGWExpectedResourceID = '/subscriptions/${varSubscriptionID}/resourceGroups/${varRGName}/providers/Microsoft.Network/applicationGateways/${varAppGWName}'
 
 // Example: minimal configuration for required arrays
@@ -18,6 +19,17 @@ param gatewayIPConfigurations = [
     properties: {
       subnet: {
         id: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/appGateways-snet'
+      }
+    }
+  }
+]
+
+param frontendIPConfigurations = [
+  {
+    name: 'public'
+    properties: {
+      publicIPAddress: {
+        id: '/subscriptions/${varSubscriptionID}/resourceGroups/${varRGName}/providers/Microsoft.Network/publicIPAddresses/${varPubIPName}'
       }
     }
   }

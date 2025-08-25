@@ -21,6 +21,7 @@ module PublicIP 'publicIPaddress.bicep' = {
 param AppGWName string
 param WAFPolicyResourceId string
 param gatewayIPConfigurations array
+param frontendIPConfigurations array
 param frontendPorts array
 param backendAddressPools array
 param backendHttpSettingsCollection array
@@ -43,16 +44,7 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
       3
     ]
     gatewayIPConfigurations: gatewayIPConfigurations
-    frontendIPConfigurations: [
-      {
-        name: 'Public'
-        properties: {
-          publicIPAddress: {
-            id: PublicIP.outputs.publicIpId
-          }
-        }
-      }
-    ]
+    frontendIPConfigurations: frontendIPConfigurations
     frontendPorts: frontendPorts
     backendAddressPools: backendAddressPools
     backendHttpSettingsCollection: backendHttpSettingsCollection
