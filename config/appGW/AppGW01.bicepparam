@@ -15,7 +15,11 @@ var varAppGWExpectedResourceID = '/subscriptions/${varSubscriptionID}/resourceGr
 param gatewayIPConfigurations = [
   {
     name: 'appgw01-gwip'
-    subnetResourceId: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/appGateways-snet'
+    properties: {
+      subnet: {
+        id: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/appGateways-snet'
+      }
+    }
   }
 ]
 
