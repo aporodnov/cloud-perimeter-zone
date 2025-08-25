@@ -71,16 +71,18 @@ param backendHttpSettingsCollection = [
 param requestRoutingRules = [
   {
     name: 'appgw01-rule'
-    ruleType: 'Basic'
-    priority: 200
-    backendAddressPool: {
-      id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
-    }
-    backendHttpSettings: {
-      id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttpsetting'
-    }
-    httpListener: {
-      id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener'
+    properties: {
+      ruleType: 'Basic'
+      priority: 200
+      backendAddressPool: {
+        id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
+      }
+      backendHttpSettings: {
+        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttpsetting'
+      }
+      httpListener: {
+        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener'
+      }
     }
   }
 ]
