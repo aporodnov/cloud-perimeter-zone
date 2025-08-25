@@ -85,7 +85,7 @@ param httpListeners = [
     name: 'appgw01-listener'
     properties: {
       frontendIPConfiguration: {
-        id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/Public'
+        id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/public'
       }
       frontendPort: {
         id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport80'
