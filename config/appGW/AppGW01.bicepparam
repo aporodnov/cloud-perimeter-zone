@@ -47,8 +47,18 @@ param frontendPorts = [
 param backendAddressPools = [
   {
     name: 'appgw01-bepool'
-    // Example: backendAddresses can be omitted or filled as needed
-    backendAddresses: []
+    backendAddresses: [
+      {
+        name: 'privateVmBackendPool'
+        properties: {
+          backendAddresses: [
+            {
+              ipAddress: '10.0.0.4'
+            }
+          ]
+        }
+      }
+    ]
   }
 ]
 
