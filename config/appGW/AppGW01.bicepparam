@@ -110,4 +110,17 @@ param httpListeners = [
       hostNames: []
     }
   }
+  {
+    name: 'appgw01-listener-private'
+    properties: {
+      frontendIPConfiguration: {
+        id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/private'
+      }
+      frontendPort: {
+        id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport80'
+      } 
+      protocol: 'Http'
+      hostNames: []
+    }
+  }
 ]
