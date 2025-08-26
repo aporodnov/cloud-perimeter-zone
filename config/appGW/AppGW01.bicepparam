@@ -61,6 +61,9 @@ param backendAddressPools = [
         {
           ipAddress: '10.0.0.4'
         }
+        {
+          ipAddress: '10.0.0.12'
+        }
       ]
     }
   }
