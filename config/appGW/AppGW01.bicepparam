@@ -94,6 +94,22 @@ param requestRoutingRules = [
       }
     }
   }
+  {
+    name: 'appgw01-rule-private'
+    properties: {
+      ruleType: 'Basic'
+      priority: 300
+      backendAddressPool: {
+        id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
+      }
+      backendHttpSettings: {
+        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttpsetting'
+      }
+      httpListener: {
+        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener-private'
+      }
+    }
+  }
 ]
 
 param httpListeners = [
