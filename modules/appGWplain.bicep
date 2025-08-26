@@ -33,9 +33,13 @@ resource appGateway 'Microsoft.Network/applicationGateways@2024-07-01' = {
   location: location
   properties: {
     sku: {
-      family: 'Generation_2'
+      // family: 'Generation_2'
       tier: 'WAF_v2'
       name: 'WAF_v2'
+    }
+    autoscaleConfiguration: {
+      minCapacity: 0
+      maxCapacity: 10
     }
     gatewayIPConfigurations: gatewayIPConfigurations
     frontendIPConfigurations: frontendIPConfigurations
