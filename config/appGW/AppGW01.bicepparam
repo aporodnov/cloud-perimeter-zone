@@ -126,7 +126,10 @@ param httpListeners = [
         id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport80'
       } 
       protocol: 'Http'
-      hostNames: []
+      hostNames: [
+        'waf.today'
+        'www.waf.today'
+      ]
     }
   }
   {
