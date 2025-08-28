@@ -4,6 +4,8 @@ param RGName = 'AppGW01-rg'
 param location = 'canadacentral'
 param PubIPName = 'appgw01-pip'
 param AppGWName = 'appgw01'
+param managedIdentityName = 'keyvaultAccess01'
+param keyVaultName = 'kvlt231231'
 param WAFPolicyResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/AppGW01-rg/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/waf-policy01'
 
 var varAppGWName = AppGWName

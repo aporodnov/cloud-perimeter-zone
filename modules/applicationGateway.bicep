@@ -19,6 +19,17 @@ module PublicIP 'publicIPaddress.bicep' = {
   }
 }
 
+param keyVaultName string
+param managedIdentityName string
+module keyVault 'keyVault.bicep' = {
+  scope: RG
+  params: {
+    location: location
+    keyVaultName: keyVaultName
+    managedIdentityName: managedIdentityName
+  }
+}
+
 param AppGWName string
 param WAFPolicyResourceId string
 param gatewayIPConfigurations array
@@ -32,6 +43,9 @@ param httpListeners array
 module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
   name: 'DeployAppGW'
   scope: RG
+  dependsOn: [
+    keyVault
+  ]
   params: {
     name: AppGWName
     location: location
@@ -52,5 +66,10 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
     backendHttpSettingsCollection: backendHttpSettingsCollection
     requestRoutingRules: requestRoutingRules
     httpListeners: httpListeners
+    managedIdentities: {
+      userAssignedResourceIds: [
+        keyVault.outputs.managedIdentityResourceId
+      ]
+    }
   }
 }
