@@ -34,6 +34,9 @@ jobs:
                     az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                     az account show
 
+            - name: Generate unique script name
+              run: echo "CERT_SCRIPT_NAME=set-appgw-cert-script-$(openssl rand -hex 4)" >> $GITHUB_ENV
+
             - name: Configure SSL Certificate For App Gateway
               uses: azure/cli@v2
               with:
@@ -43,4 +46,5 @@ jobs:
                         --name "Deploy_SSLConfigForAppGateway" \
                         --resource-group "AppGW01-rg" \
                         --template-file modules/TLSConfig.bicep \
-                        --parameters config/appGW/AppGW01_Cert_wafToday.bicepparam
+                        --parameters config/appGW/AppGW01_Cert_wafToday.bicepparam \ 
+                        --parameters certDeploymentScriptName="${{ env.CERT_SCRIPT_NAME }}"
