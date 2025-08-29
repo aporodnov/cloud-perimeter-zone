@@ -41,6 +41,6 @@ jobs:
                 inlineScript: |
                     az deployment group create \
                         --name "Deploy_SSLConfigForAppGateway" \
-                        --location $LOCATION \
+                        --resource-group "AppGW01-rg" \
                         --template-file modules/TLSConfig.bicep \
                         --parameters config/appGW/AppGW01_Cert_wafToday.bicepparam
