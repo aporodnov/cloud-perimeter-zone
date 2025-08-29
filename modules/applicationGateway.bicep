@@ -86,12 +86,6 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
     }
     roleAssignments: [
       {
-        name: guid('MI Operator ${keyVault.outputs.managedIdentityResourceId}')
-        principalId: keyVault.outputs.managedIdentityPrincipalId
-        roleDefinitionIdOrName: 'f1a07417-d97a-45cb-824c-7a7467783830'
-        principalType: 'ServicePrincipal'
-      }
-      {
         name: guid('Contributor ${keyVault.outputs.managedIdentityResourceId}')
         principalId: keyVault.outputs.managedIdentityPrincipalId
         roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'

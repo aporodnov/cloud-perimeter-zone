@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-    Deploy_PerimeterLandingZone:
+    Deploy-App-Gateway-Resources:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repository

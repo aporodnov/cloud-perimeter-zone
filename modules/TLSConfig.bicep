@@ -32,5 +32,8 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01'
     retentionInterval: 'P1D'
     arguments: '-KeyVaultName "${keyVault.name}" -CertName "${CertName}" -AppGwName "${AppGwName}" -ResourceGroupName "${ResourceGroupName}" -ManagedIdentityResourceId "${managedIdentity.id}"'
     scriptContent: loadTextContent('../PSScripts/Set-CertificateInKeyVault.ps1')
+    // containerSettings: {
+    //   subnetIds:
+    // }
   }
 }
