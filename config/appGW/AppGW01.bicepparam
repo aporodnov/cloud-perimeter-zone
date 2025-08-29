@@ -1,12 +1,13 @@
 using '../../modules/applicationGateway.bicep'
 
-param RGName = 'AppGW01-rg'
+param RGName = 'appgw01-rg'
 param location = 'canadacentral'
 param PubIPName = 'appgw01-pip'
 param AppGWName = 'appgw01'
-param managedIdentityName = 'keyvaultAccess01'
+param managedIdentityName = 'CertManagerSPN'
 param keyVaultName = 'kvlt231231'
 param WAFPolicyResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/AppGW01-rg/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/waf-policy01'
+param PrivateEndpointsubnetResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/privateEndpoints-snet'
 
 var varAppGWName = AppGWName
 var varSubscriptionID = 'f638c48a-5d9a-44cc-ae87-de50507a6090'

@@ -8,31 +8,32 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-
   location: location
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2024-11-01' = {
-  name: keyVaultName
-  location: location
-  properties: {
-    sku: {
-      name: 'standard'
-      family: 'A'
-    }
-    tenantId: tenant().tenantId
-    enabledForDeployment: true
-    enabledForTemplateDeployment: true
-    enableRbacAuthorization: true
-  }
-}
+param PrivateEndpointsubnetResourceId string
 
-resource keyPermissions 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('msi-${managedIdentityName}-${keyVaultName}-KeyVaultAdmin-RoleAssignment')
-  scope: keyVault
-  properties: {
-    principalId: managedIdentity.properties.principalId
-    roleDefinitionId: subscriptionResourceId(
-      'Microsoft.Authorization/roleDefinitions',
-      '00482a5a-887f-4fb3-b363-3b7fe8e74483'
-    )
-    principalType: 'ServicePrincipal'
+module keyVault 'br/public:avm/res/key-vault/vault:0.13.3' = {
+  name: 'deploy_KeyVault'
+  params: {
+    name: keyVaultName
+    location: location
+    sku: 'standard'
+    enableRbacAuthorization: true
+    enableVaultForDeployment: true
+    enableVaultForTemplateDeployment: true
+    publicNetworkAccess: 'Disabled'
+    privateEndpoints: [
+      { 
+        service: 'vault'
+        subnetResourceId: PrivateEndpointsubnetResourceId
+      }
+    ]
+    roleAssignments: [
+      {
+        name:guid('msi-${managedIdentityName}-${keyVaultName}-KeyVaultAdmin-RoleAssignment')
+        principalId: managedIdentity.properties.principalId
+        roleDefinitionIdOrName: '00482a5a-887f-4fb3-b363-3b7fe8e74483'
+        principalType: 'ServicePrincipal'
+      }
+    ]
   }
 }
 

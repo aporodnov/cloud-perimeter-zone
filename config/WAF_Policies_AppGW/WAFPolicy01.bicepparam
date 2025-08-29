@@ -1,6 +1,6 @@
 using '../../modules/RegionalWAFPolicy.bicep'
 
-param AppGW_WAF_RGName = 'AppGW01-rg'
+param AppGW_WAF_RGName = 'appgw01-rg'
 param location = 'canadacentral'
 param WAFName = 'waf-policy01'
 

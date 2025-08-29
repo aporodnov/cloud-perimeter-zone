@@ -19,6 +19,8 @@ module PublicIP 'publicIPaddress.bicep' = {
   }
 }
 
+param PrivateEndpointsubnetResourceId string
+
 param keyVaultName string
 param managedIdentityName string
 module keyVault 'keyVault.bicep' = {
@@ -27,6 +29,7 @@ module keyVault 'keyVault.bicep' = {
     location: location
     keyVaultName: keyVaultName
     managedIdentityName: managedIdentityName
+    PrivateEndpointsubnetResourceId: PrivateEndpointsubnetResourceId
   }
 }
 
@@ -39,6 +42,15 @@ param backendAddressPools array
 param backendHttpSettingsCollection array
 param requestRoutingRules array
 param httpListeners array
+
+resource ManagedIdentityRBAC 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('Network Contributor ${managedIdentityName}')
+  properties: {
+    principalId: keyVault.outputs.managedIdentityPrincipalId
+    roleDefinitionId: '4d97b98b-1d4f-4787-a291-c67834d212e7'
+    principalType: 'ServicePrincipal'
+  }
+}
 
 module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
   name: 'DeployAppGW'
@@ -71,5 +83,19 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
         keyVault.outputs.managedIdentityResourceId
       ]
     }
+    roleAssignments: [
+      {
+        name: guid('MI Operator ${keyVault.outputs.managedIdentityResourceId}')
+        principalId: keyVault.outputs.managedIdentityPrincipalId
+        roleDefinitionIdOrName: 'f1a07417-d97a-45cb-824c-7a7467783830'
+        principalType: 'ServicePrincipal'
+      }
+      {
+        name: guid('Contributor ${keyVault.outputs.managedIdentityResourceId}')
+        principalId: keyVault.outputs.managedIdentityPrincipalId
+        roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+        principalType: 'ServicePrincipal'
+      }
+    ]
   }
 }

@@ -9,7 +9,7 @@
       "value": "canadacentral"
     },
     "managedIdentityName": {
-      "value": "keyvaultAccess01"
+      "value": "CertManagerSPN"
     },
     "keyVaultName": {
       "value": "kvlt231231"
@@ -21,7 +21,7 @@
       "value": "appgw01"
     },
     "ResourceGroupName": {
-      "value": "AppGW01-rg"
+      "value": "appgw01-rg"
     }
   }
 }
