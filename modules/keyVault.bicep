@@ -10,6 +10,7 @@ resource managedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-
 
 resource managedIdentityRBAC 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid(managedIdentityName)
+  scope: managedIdentity
   properties: {
     principalId: managedIdentity.properties.principalId
     roleDefinitionId: 'f1a07417-d97a-45cb-824c-7a7467783830'
