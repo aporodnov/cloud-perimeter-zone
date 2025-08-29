@@ -43,7 +43,7 @@ param backendHttpSettingsCollection array
 param requestRoutingRules array
 param httpListeners array
 
-module ManagedIdentityRBAC 'br/public:avm/res/authorization/role-assignment/sub-scope:0.1.0' = {
+module ManagedIdentityRBACSub 'br/public:avm/res/authorization/role-assignment/sub-scope:0.1.0' = {
   name: 'NetContributorRBACForMI'
   params: {
     name: guid('Network-Contributor-${managedIdentityName}')
@@ -52,6 +52,18 @@ module ManagedIdentityRBAC 'br/public:avm/res/authorization/role-assignment/sub-
     principalType: 'ServicePrincipal'
   }
 }
+
+module ManagedIdentityRBACRG 'br/public:avm/res/authorization/role-assignment/rg-scope:0.1.0' = {
+    name: 'MIOperatorRBACforMI'
+    scope: RG
+    params: {
+      name: guid('Managed-Identity-Operator-${managedIdentityName}')
+      principalId: keyVault.outputs.managedIdentityPrincipalId
+      roleDefinitionIdOrName: 'f1a07417-d97a-45cb-824c-7a7467783830'
+      principalType: 'ServicePrincipal'
+    }
+  }
+
 
 module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
   name: 'DeployAppGW'
