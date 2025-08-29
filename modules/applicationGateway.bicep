@@ -43,15 +43,12 @@ param backendHttpSettingsCollection array
 param requestRoutingRules array
 param httpListeners array
 
-resource ManagedIdentityRBAC 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('Network-Contributor-${managedIdentityName}')
-  scope: subscription()
-  dependsOn: [
-    keyVault
-  ]
-  properties: {
+module ManagedIdentityRBAC 'br/public:avm/res/authorization/role-assignment/sub-scope:0.1.0' = {
+  name: 'NetContributorRBACForMI'
+  params: {
+    name: guid('Network-Contributor-${managedIdentityName}')
     principalId: keyVault.outputs.managedIdentityPrincipalId
-    roleDefinitionId: '4d97b98b-1d4f-4787-a291-c67834d212e7'
+    roleDefinitionIdOrName: '4d97b98b-1d4f-4787-a291-c67834d212e7'
     principalType: 'ServicePrincipal'
   }
 }
