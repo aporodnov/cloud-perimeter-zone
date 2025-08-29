@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 jobs:
-    Deploy_PerimeterLandingZone:
+    Configure_SSL_Certificate:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repository
@@ -40,7 +40,7 @@ jobs:
                 azcliversion: latest
                 inlineScript: |
                     az deployment group create \
-                        --name "Deploy_SSLConfigForAppGateway" \
-                        --resource-group "AppGW01-rg" \
+                        --name Deploy_SSLConfigForAppGateway \
+                        --resource-group AppGW01-rg \
                         --template-file modules/TLSConfig.bicep \
                         --parameters config/appGW/AppGW01_Cert_wafToday.bicepparam
