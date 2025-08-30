@@ -46,6 +46,7 @@ module privateDNSZone 'br/public:avm/res/network/private-dns-zone:0.8.0' = {
     virtualNetworkLinks: [
       {
         virtualNetworkResourceId: perimeterZoneVNET.outputs.resourceId
+        resolutionPolicy: 'NxDomainRedirect'
       }
     ]
   }
