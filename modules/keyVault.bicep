@@ -19,13 +19,13 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.13.3' = {
     enableRbacAuthorization: true
     enableVaultForDeployment: true
     enableVaultForTemplateDeployment: true
-    // publicNetworkAccess: 'Disabled'
-    // privateEndpoints: [
-    //   { 
-    //     service: 'vault'
-    //     subnetResourceId: PrivateEndpointsubnetResourceId
-    //   }
-    // ]
+    publicNetworkAccess: 'Disabled'
+    privateEndpoints: [
+      { 
+        service: 'vault'
+        subnetResourceId: PrivateEndpointsubnetResourceId
+      }
+    ]
     roleAssignments: [
       {
         name:guid('msi-${managedIdentityName}-${keyVaultName}-KeyVaultAdmin-RoleAssignment')
