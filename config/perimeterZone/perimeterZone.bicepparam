@@ -11,8 +11,7 @@ param vNetAddressPrefixes = [
 	'192.168.100.0/24'
 ]
 param dnsServers = [
-	'8.8.8.8'
-	'8.8.4.4'
+	// '192.168.0.55'
 ]
 param subnets = [
 	{
