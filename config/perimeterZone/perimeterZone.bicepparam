@@ -18,22 +18,37 @@ param subnets = [
 	{
 		name: 'appGateways-snet'
 		addressPrefix: '192.168.100.0/25'
+		privateEndpointNetworkPolicies: [
+			'RouteTableEnabled'
+		]
 	}
 	{
 		name: 'frontDoor-snet'
 		addressPrefix: '192.168.100.128/26'
+		privateEndpointNetworkPolicies: [
+			'RouteTableEnabled'
+		]
 	}
   {
 		name: 'privateEndpoints-snet'
 		addressPrefix: '192.168.100.192/27'
+		privateEndpointNetworkPolicies: [
+			'RouteTableEnabled'
+		]
 	}
   {
-		name: 'connectivityTest-snet'
+		name: 'nva-snet'
 		addressPrefix: '192.168.100.224/28'
 	}
-  // {
-	// 	name: 'Reserved'
-	// 	addressPrefix: '192.168.100.240/28'
-	// }
+	{
+		name: 'containers-snet'
+		addressPrefix: '192.168.100.240/29'
+		delegation: 'Microsoft.ContainerInstance/containerGroups'
+
+	}
+	{
+		name: 'test-snet'
+		addressPrefix: '192.168.100.248/29'
+	}
 ]
 

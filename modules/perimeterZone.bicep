@@ -34,3 +34,15 @@ module perimeterZoneVNET 'br/public:avm/res/network/virtual-network:0.7.0' = {
     subnets: subnets
   }
 }
+//remove DNS after tests!!!
+module privateDNSZone 'br/public:avm/res/network/private-dns-zone:0.8.0' = {
+  scope: resourceGroupNetwork
+  params: {
+    name: 'privatelink.vaultcore.azure.net'
+    virtualNetworkLinks: [
+      {
+        virtualNetworkResourceId: perimeterZoneVNET.outputs.resourceId
+      }
+    ]
+  }
+}
