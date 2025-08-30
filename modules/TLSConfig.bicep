@@ -32,8 +32,12 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01'
     retentionInterval: 'P1D'
     arguments: '-KeyVaultName "${keyVault.name}" -CertName "${CertName}" -AppGwName "${AppGwName}" -ResourceGroupName "${ResourceGroupName}" -ManagedIdentityResourceId "${managedIdentity.id}"'
     scriptContent: loadTextContent('../PSScripts/Set-CertificateInKeyVault.ps1')
-    // containerSettings: {
-    //   subnetIds:
-    // }
+    containerSettings: {
+      subnetIds: [
+        {
+          id: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/containers-snet'
+        }
+      ]
+    }
   }
 }
