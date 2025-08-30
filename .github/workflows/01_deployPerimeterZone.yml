@@ -45,3 +45,4 @@ jobs:
                         --location $LOCATION \
                         --template-file modules/perimeterZone.bicep \
                         --parameters config/perimeterZone/perimeterZone.bicepparam
+                        --output jsonc
