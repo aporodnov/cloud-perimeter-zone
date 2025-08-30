@@ -17,23 +17,17 @@ param subnets = [
 	{
 		name: 'appGateways-snet'
 		addressPrefix: '192.168.100.0/25'
-		privateEndpointNetworkPolicies: [
-			'RouteTableEnabled'
-		]
+		privateEndpointNetworkPolicies: 'Enabled'
 	}
 	{
 		name: 'frontDoor-snet'
 		addressPrefix: '192.168.100.128/26'
-		privateEndpointNetworkPolicies: [
-			'RouteTableEnabled'
-		]
+		privateEndpointNetworkPolicies: 'Enabled'
 	}
   {
 		name: 'privateEndpoints-snet'
 		addressPrefix: '192.168.100.192/27'
-		privateEndpointNetworkPolicies: [
-			'RouteTableEnabled'
-		]
+		privateEndpointNetworkPolicies: 'Enabled'
 	}
   {
 		name: 'nva-snet'
