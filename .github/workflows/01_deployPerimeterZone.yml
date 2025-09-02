@@ -44,5 +44,4 @@ jobs:
                         --name "Deploy_PerimeterLandingZone" \
                         --location $LOCATION \
                         --template-file modules/perimeterZone.bicep \
-                        --parameters config/perimeterZone/perimeterZone.bicepparam \
-                        --output jsonc
+                        --parameters config/perimeterZone/perimeterZone.bicepparam

@@ -17,8 +17,7 @@ param subnets = [
 	{
 		name: 'appGateways-snet'
 		addressPrefix: '192.168.100.0/25'
-		// privateEndpointNetworkPolicies: 'Enabled'
-		privateEndpointNetworkPolicies: 'Enabled123'
+		privateEndpointNetworkPolicies: 'Enabled'
 	}
 	{
 		name: 'frontDoor-snet'
