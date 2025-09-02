@@ -16,6 +16,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2024-11-01' existing = {
 param CertName string
 param AppGwName string
 param ResourceGroupName string
+param storageAccountName string
 
 resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01' = {
   name: certDeploymentScriptName
@@ -32,6 +33,9 @@ resource certDeploymentScript 'Microsoft.Resources/deploymentScripts@2023-08-01'
     retentionInterval: 'P1D'
     arguments: '-KeyVaultName "${keyVault.name}" -CertName "${CertName}" -AppGwName "${AppGwName}" -ResourceGroupName "${ResourceGroupName}" -ManagedIdentityResourceId "${managedIdentity.id}"'
     scriptContent: loadTextContent('../PSScripts/Set-CertificateInKeyVault.ps1')
+    storageAccountSettings: {
+      storageAccountName: storageAccountName
+    }
     containerSettings: {
       subnetIds: [
         {

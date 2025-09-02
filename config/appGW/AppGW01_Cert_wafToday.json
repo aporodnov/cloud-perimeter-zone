@@ -14,6 +14,9 @@
     "keyVaultName": {
       "value": "kvlt231231"
     },
+    "storageAccountName": {
+      "value": ""
+    },
     "CertName": {
       "value": "wafToday"
     },

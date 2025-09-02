@@ -20,14 +20,16 @@ module PublicIP 'publicIPaddress.bicep' = {
 }
 
 param PrivateEndpointsubnetResourceId string
+param storageAccountName string
 
 param keyVaultName string
 param managedIdentityName string
-module keyVault 'keyVault.bicep' = {
+module keyVault 'keyVaultnStorage.bicep' = {
   scope: RG
   params: {
     location: location
     keyVaultName: keyVaultName
+    storageAccountName: storageAccountName
     managedIdentityName: managedIdentityName
     PrivateEndpointsubnetResourceId: PrivateEndpointsubnetResourceId
   }
