@@ -205,8 +205,17 @@ param httpListeners = [
         'www.waf.today'
       ]
       sslCertificate: {
-        id: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/appgw01-rg/providers/Microsoft.Network/applicationGateways/appgw01/sslCertificates/wafToday'
+        id: '${varAppGWExpectedResourceID}/sslCertificates/wafToday'
       }
+    }
+  }
+]
+
+param sslCertificates = [
+  {
+    name: 'wafToday'
+    properties: {
+      keyVaultSecretId: 'https://kvlt231231.vault.azure.net/secrets/wafToday/0e8132aacdf147a2a02b730ee05b3e6a' 
     }
   }
 ]

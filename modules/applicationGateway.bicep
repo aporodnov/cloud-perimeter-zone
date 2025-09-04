@@ -44,6 +44,7 @@ param backendAddressPools array
 param backendHttpSettingsCollection array
 param requestRoutingRules array
 param httpListeners array
+param sslCertificates array
 
 module ManagedIdentityRBACSub 'br/public:avm/res/authorization/role-assignment/sub-scope:0.1.0' = {
   name: 'NetContributorRBACForMI'
@@ -98,6 +99,7 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
         keyVault.outputs.managedIdentityResourceId
       ]
     }
+    sslCertificates: sslCertificates
     roleAssignments: [
       {
         name: guid('Contributor ${keyVault.outputs.managedIdentityResourceId}')
