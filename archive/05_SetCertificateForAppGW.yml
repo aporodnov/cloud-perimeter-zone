@@ -1,4 +1,4 @@
-name: 5. Deploy-SLLConfig-Gateway
+name: 5. Deploy-SLLConfig-Gateway - Deprecated
 on:
     workflow_dispatch:
 

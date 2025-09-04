@@ -9,12 +9,12 @@ param keyVaultName = 'newkvlt231231'
 param WAFPolicyResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/AppGW01-rg/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/waf-policy01'
 param PrivateEndpointsubnetResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/privateEndpoints-snet'
 
-@description('storageNamePrefix should contain lowercase letters and numbers only, limit it to 15 chars')
-var storageNamePrefix = 'myorgstorage'
-var storageAccUniqueString = uniqueString(storageNamePrefix)
+// @description('storageNamePrefix should contain lowercase letters and numbers only, limit it to 15 chars')
+// var storageNamePrefix = 'myorgstorage'
+// var storageAccUniqueString = uniqueString(storageNamePrefix)
 
-@maxLength(23)
-param storageAccountName = '${storageNamePrefix}${substring(storageAccUniqueString, 0, 6)}'
+// @maxLength(23)
+// param storageAccountName = '${storageNamePrefix}${substring(storageAccUniqueString, 0, 6)}'
 
 var varAppGWName = AppGWName
 var varSubscriptionID = 'f638c48a-5d9a-44cc-ae87-de50507a6090'
@@ -262,3 +262,5 @@ param redirectConfigurations = [
     }
   }
 ]
+
+param diagnosticSettings = []

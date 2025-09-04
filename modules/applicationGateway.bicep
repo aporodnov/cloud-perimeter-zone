@@ -20,16 +20,16 @@ module PublicIP 'publicIPaddress.bicep' = {
 }
 
 param PrivateEndpointsubnetResourceId string
-param storageAccountName string
+// param storageAccountName string
 
 param keyVaultName string
 param managedIdentityName string
-module keyVault 'keyVaultnStorage.bicep' = {
+module keyVault 'keyVault.bicep' = {
   scope: RG
   params: {
     location: location
     keyVaultName: keyVaultName
-    storageAccountName: storageAccountName
+    // storageAccountName: storageAccountName
     managedIdentityName: managedIdentityName
     PrivateEndpointsubnetResourceId: PrivateEndpointsubnetResourceId
   }
@@ -47,6 +47,7 @@ param httpListeners array
 param sslCertificates array
 param probes array
 param redirectConfigurations array
+param diagnosticSettings array
 
 module ManagedIdentityRBACSub 'br/public:avm/res/authorization/role-assignment/sub-scope:0.1.0' = {
   name: 'NetContributorRBACForMI'
@@ -104,6 +105,7 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
     }
     sslCertificates: sslCertificates
     probes: probes
+    diagnosticSettings: diagnosticSettings
     roleAssignments: [
       {
         name: guid('Contributor ${keyVault.outputs.managedIdentityResourceId}')

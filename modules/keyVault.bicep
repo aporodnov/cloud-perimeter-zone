@@ -37,42 +37,42 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.13.3' = {
   }
 }
 
-param storageAccountName string = 'scripts-stg-${uniqueString(location)}'
+// param storageAccountName string = 'scripts-stg-${uniqueString(location)}'
 
-module FileStorage 'br/public:avm/res/storage/storage-account:0.26.2' = {
-  name: 'Deploy_StorageAccountForDeploymentScripts'
-  params: {
-    name: storageAccountName
-    kind: 'StorageV2'
-    location: location
-    skuName: 'Standard_LRS'
-    publicNetworkAccess: 'Disabled'
-    networkAcls: {
-      defaultAction: 'Deny'
-      bypass: 'AzureServices, Logging, Metrics'
-    }
-    privateEndpoints: [
-      {
-        service: 'file'
-        subnetResourceId: PrivateEndpointsubnetResourceId
-      }
-    ]
-    roleAssignments: [
-        {
-        name:guid('msi-${managedIdentityName}-${storageAccountName}-StorageFileDataPrivilegedContributor')
-        principalId: managedIdentity.properties.principalId
-        roleDefinitionIdOrName: '69566ab7-960f-475b-8e7c-b3118f30c6bd'
-        principalType: 'ServicePrincipal'
-      }
-    ]
-  }
-}
+// module FileStorage 'br/public:avm/res/storage/storage-account:0.26.2' = {
+//   name: 'Deploy_StorageAccountForDeploymentScripts'
+//   params: {
+//     name: storageAccountName
+//     kind: 'StorageV2'
+//     location: location
+//     skuName: 'Standard_LRS'
+//     publicNetworkAccess: 'Disabled'
+//     networkAcls: {
+//       defaultAction: 'Deny'
+//       bypass: 'AzureServices, Logging, Metrics'
+//     }
+//     privateEndpoints: [
+//       {
+//         service: 'file'
+//         subnetResourceId: PrivateEndpointsubnetResourceId
+//       }
+//     ]
+//     roleAssignments: [
+//         {
+//         name:guid('msi-${managedIdentityName}-${storageAccountName}-StorageFileDataPrivilegedContributor')
+//         principalId: managedIdentity.properties.principalId
+//         roleDefinitionIdOrName: '69566ab7-960f-475b-8e7c-b3118f30c6bd'
+//         principalType: 'ServicePrincipal'
+//       }
+//     ]
+//   }
+// }
 
 @description('The name of the created Key Vault.')
 output keyVaultName string = keyVault.name
 
-@description('The name of the created Storage Account Name.')
-output storageAccountName string = FileStorage.name
+// @description('The name of the created Storage Account Name.')
+// output storageAccountName string = FileStorage.name
 
 @description('The resource ID of the created Managed Identity.')
 output managedIdentityResourceId string = managedIdentity.id
