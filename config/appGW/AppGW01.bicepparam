@@ -145,7 +145,7 @@ param requestRoutingRules = [
     name: 'appgw01-443-rule'
     properties: {
       ruleType: 'Basic'
-      priority: 300
+      priority: 400
       backendAddressPool: {
         id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
       }
