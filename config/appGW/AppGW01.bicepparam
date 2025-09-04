@@ -95,7 +95,7 @@ param backendHttpSettingsCollection = [
     }
   }
   {
-    name: 'appgw01-behttps-settings'
+    name: 'appgw01-behttps-setting'
     properties: {
       port: 443
       cookieBasedAffinity: 'Disabled'
