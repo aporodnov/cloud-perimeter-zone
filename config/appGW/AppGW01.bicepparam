@@ -94,36 +94,36 @@ param backendHttpSettingsCollection = [
       cookieBasedAffinity: 'Disabled'
     }
   }
-  // {
-  //   name: 'appgw01-behttps-setting'
-  //   properties: {
-  //     port: 443
-  //     cookieBasedAffinity: 'Disabled'
-  //     protocol: 'Https'
-  //     pickHostNameFromBackendAddress: false
-  //     hostname: 'waf.today'
-  //     requestTimeout: 30
-  //     probe: {
-  //       id: '${varAppGWExpectedResourceID}/probes/httpsSettingProbe'
-  //     }
-  //   }
-  // }
+  {
+    name: 'appgw01-behttps-setting'
+    properties: {
+      port: 443
+      cookieBasedAffinity: 'Disabled'
+      protocol: 'Https'
+      pickHostNameFromBackendAddress: false
+      hostname: 'waf.today'
+      requestTimeout: 30
+      probe: {
+        id: '${varAppGWExpectedResourceID}/probes/httpsSettingProbe'
+      }
+    }
+  }
 ]
 
 param requestRoutingRules = [
-  // {
-  //   name: 'appgw01-rule'
-  //   properties: {
-  //     ruleType: 'Basic'
-  //     priority: 200
-  //     httpListener: {
-  //       id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener'
-  //     }
-  //     redirectConfiguration: {
-  //       id: '${varAppGWExpectedResourceID}/redirectConfigurations/httpRedirect80'
-  //     }
-  //   }
-  // }
+  {
+    name: 'appgw01-rule'
+    properties: {
+      ruleType: 'Basic'
+      priority: 200
+      httpListener: {
+        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener'
+      }
+      redirectConfiguration: {
+        id: '${varAppGWExpectedResourceID}/redirectConfigurations/httpRedirect80'
+      }
+    }
+  }
   {
     name: 'appgw01-rule-private'
     properties: {
@@ -142,22 +142,22 @@ param requestRoutingRules = [
   }
   //Only use this if you already have SSL certificate configured for App Gateway!
   //SSL encryption example:
-  // {
-  //   name: 'appgw01-443-rule'
-  //   properties: {
-  //     ruleType: 'Basic'
-  //     priority: 400
-  //     backendAddressPool: {
-  //       id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
-  //     }
-  //     backendHttpSettings: {
-  //       id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttps-setting'
-  //     }
-  //     httpListener: {
-  //       id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
-  //     }
-  //   }
-  // }
+  {
+    name: 'appgw01-443-rule'
+    properties: {
+      ruleType: 'Basic'
+      priority: 400
+      backendAddressPool: {
+        id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
+      }
+      backendHttpSettings: {
+        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttps-setting'
+      }
+      httpListener: {
+        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
+      }
+    }
+  }
 ]
 
 param httpListeners = [
@@ -191,74 +191,74 @@ param httpListeners = [
     }
   }
   //Only use this if you already have SSL certificate configured for App Gateway!
-  //End to End SSL encryption example:
-  //   {
-  //   name: 'appgw01-listener443-public'
-  //   properties: {
-  //     frontendIPConfiguration: {
-  //       id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/public'
-  //     }
-  //     frontendPort: {
-  //       id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport443'
-  //     } 
-  //     protocol: 'Https'
-  //     hostNames: [
-  //       'waf.today'
-  //       'www.waf.today'
-  //     ]
-  //     sslCertificate: {
-  //       id: '${varAppGWExpectedResourceID}/sslCertificates/wafToday'
-  //     }
-  //   }
-  // }
+  // End to End SSL encryption example:
+    {
+    name: 'appgw01-listener443-public'
+    properties: {
+      frontendIPConfiguration: {
+        id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/public'
+      }
+      frontendPort: {
+        id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport443'
+      } 
+      protocol: 'Https'
+      hostNames: [
+        'waf.today'
+        'www.waf.today'
+      ]
+      sslCertificate: {
+        id: '${varAppGWExpectedResourceID}/sslCertificates/wafToday'
+      }
+    }
+  }
 ]
 
 param probes = [
-  // {
-  //   name: 'httpsSettingProbe'
-  //   properties: {
-  //     host: 'waf.today'
-  //     interval: 60
-  //     match: {
-  //       statusCodes: [
-  //         '200'
-  //         '401'
-  //       ]
-  //     }
-  //     path: '/'
-  //     pickHostNameFromBackendHttpSettings: false
-  //     protocol: 'Https'
-  //     timeout: 15
-  //     unhealthyThreshold: 5
-  //     minServers: 1
-  //   }
-  // }
+  {
+    name: 'httpsSettingProbe'
+    properties: {
+      host: 'waf.today'
+      interval: 60
+      match: {
+        statusCodes: [
+          '200'
+          '401'
+        ]
+      }
+      path: '/'
+      pickHostNameFromBackendHttpSettings: false
+      protocol: 'Https'
+      timeout: 15
+      unhealthyThreshold: 5
+      minServers: 1
+    }
+  }
 ]
 
 param sslCertificates = [
-  // {
-  //   name: 'wafToday'
-  //   properties: {
-  //     keyVaultSecretId: 'https://kvlt231231.vault.azure.net/secrets/wafToday/0e8132aacdf147a2a02b730ee05b3e6a' 
-  //   }
-  // }
+  {
+    name: 'wafToday'
+    properties: {
+      keyVaultSecretId: 'https://newkvlt231231.vault.azure.net/secrets/wafToday/c469dd9cd6744d518c108b147cddd224' 
+    }
+  }
 ]
 
 param redirectConfigurations = [
-  // {
-  //   name: 'httpRedirect80'
-  //   properties: {
-  //     includePath: true
-  //     includeQueryString: true
-  //     redirectType: 'Permanent'
-  //     requestRoutingRules: [
-  //       {
-  //         id: '${varAppGWExpectedResourceID}/requestRoutingRules/appgw01-rule'
-  //       }
-  //     ]
-  //     targetListener: {
-  //       id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
-  //     }
-  //   }
-  // }
+  {
+    name: 'httpRedirect80'
+    properties: {
+      includePath: true
+      includeQueryString: true
+      redirectType: 'Permanent'
+      requestRoutingRules: [
+        {
+          id: '${varAppGWExpectedResourceID}/requestRoutingRules/appgw01-rule'
+        }
+      ]
+      targetListener: {
+        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
+      }
+    }
+  }
 ]
