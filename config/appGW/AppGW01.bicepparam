@@ -5,7 +5,7 @@ param location = 'canadacentral'
 param PubIPName = 'appgw01-pip'
 param AppGWName = 'appgw01'
 param managedIdentityName = 'CertManagerSPN'
-param keyVaultName = 'kvlt231231'
+param keyVaultName = 'newkvlt231231'
 param WAFPolicyResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/AppGW01-rg/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/waf-policy01'
 param PrivateEndpointsubnetResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/privateEndpoints-snet'
 
@@ -94,36 +94,36 @@ param backendHttpSettingsCollection = [
       cookieBasedAffinity: 'Disabled'
     }
   }
-  {
-    name: 'appgw01-behttps-setting'
-    properties: {
-      port: 443
-      cookieBasedAffinity: 'Disabled'
-      protocol: 'Https'
-      pickHostNameFromBackendAddress: false
-      hostname: 'waf.today'
-      requestTimeout: 30
-      probe: {
-        id: '${varAppGWExpectedResourceID}/probes/httpsSettingProbe'
-      }
-    }
-  }
+  // {
+  //   name: 'appgw01-behttps-setting'
+  //   properties: {
+  //     port: 443
+  //     cookieBasedAffinity: 'Disabled'
+  //     protocol: 'Https'
+  //     pickHostNameFromBackendAddress: false
+  //     hostname: 'waf.today'
+  //     requestTimeout: 30
+  //     probe: {
+  //       id: '${varAppGWExpectedResourceID}/probes/httpsSettingProbe'
+  //     }
+  //   }
+  // }
 ]
 
 param requestRoutingRules = [
-  {
-    name: 'appgw01-rule'
-    properties: {
-      ruleType: 'Basic'
-      priority: 200
-      httpListener: {
-        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener'
-      }
-      redirectConfiguration: {
-        id: '${varAppGWExpectedResourceID}/redirectConfigurations/httpRedirect80'
-      }
-    }
-  }
+  // {
+  //   name: 'appgw01-rule'
+  //   properties: {
+  //     ruleType: 'Basic'
+  //     priority: 200
+  //     httpListener: {
+  //       id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener'
+  //     }
+  //     redirectConfiguration: {
+  //       id: '${varAppGWExpectedResourceID}/redirectConfigurations/httpRedirect80'
+  //     }
+  //   }
+  // }
   {
     name: 'appgw01-rule-private'
     properties: {
@@ -142,22 +142,22 @@ param requestRoutingRules = [
   }
   //Only use this if you already have SSL certificate configured for App Gateway!
   //SSL encryption example:
-  {
-    name: 'appgw01-443-rule'
-    properties: {
-      ruleType: 'Basic'
-      priority: 400
-      backendAddressPool: {
-        id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
-      }
-      backendHttpSettings: {
-        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttps-setting'
-      }
-      httpListener: {
-        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
-      }
-    }
-  }
+  // {
+  //   name: 'appgw01-443-rule'
+  //   properties: {
+  //     ruleType: 'Basic'
+  //     priority: 400
+  //     backendAddressPool: {
+  //       id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
+  //     }
+  //     backendHttpSettings: {
+  //       id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttps-setting'
+  //     }
+  //     httpListener: {
+  //       id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
+  //     }
+  //   }
+  // }
 ]
 
 param httpListeners = [
@@ -192,73 +192,73 @@ param httpListeners = [
   }
   //Only use this if you already have SSL certificate configured for App Gateway!
   //End to End SSL encryption example:
-    {
-    name: 'appgw01-listener443-public'
-    properties: {
-      frontendIPConfiguration: {
-        id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/public'
-      }
-      frontendPort: {
-        id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport443'
-      } 
-      protocol: 'Https'
-      hostNames: [
-        'waf.today'
-        'www.waf.today'
-      ]
-      sslCertificate: {
-        id: '${varAppGWExpectedResourceID}/sslCertificates/wafToday'
-      }
-    }
-  }
+  //   {
+  //   name: 'appgw01-listener443-public'
+  //   properties: {
+  //     frontendIPConfiguration: {
+  //       id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/public'
+  //     }
+  //     frontendPort: {
+  //       id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport443'
+  //     } 
+  //     protocol: 'Https'
+  //     hostNames: [
+  //       'waf.today'
+  //       'www.waf.today'
+  //     ]
+  //     sslCertificate: {
+  //       id: '${varAppGWExpectedResourceID}/sslCertificates/wafToday'
+  //     }
+  //   }
+  // }
 ]
 
 param probes = [
-  {
-    name: 'httpsSettingProbe'
-    properties: {
-      host: 'waf.today'
-      interval: 60
-      match: {
-        statusCodes: [
-          '200'
-          '401'
-        ]
-      }
-      path: '/'
-      pickHostNameFromBackendHttpSettings: false
-      protocol: 'Https'
-      timeout: 15
-      unhealthyThreshold: 5
-      minServers: 1
-    }
-  }
+  // {
+  //   name: 'httpsSettingProbe'
+  //   properties: {
+  //     host: 'waf.today'
+  //     interval: 60
+  //     match: {
+  //       statusCodes: [
+  //         '200'
+  //         '401'
+  //       ]
+  //     }
+  //     path: '/'
+  //     pickHostNameFromBackendHttpSettings: false
+  //     protocol: 'Https'
+  //     timeout: 15
+  //     unhealthyThreshold: 5
+  //     minServers: 1
+  //   }
+  // }
 ]
 
 param sslCertificates = [
-  {
-    name: 'wafToday'
-    properties: {
-      keyVaultSecretId: 'https://kvlt231231.vault.azure.net/secrets/wafToday/0e8132aacdf147a2a02b730ee05b3e6a' 
-    }
-  }
+  // {
+  //   name: 'wafToday'
+  //   properties: {
+  //     keyVaultSecretId: 'https://kvlt231231.vault.azure.net/secrets/wafToday/0e8132aacdf147a2a02b730ee05b3e6a' 
+  //   }
+  // }
 ]
 
 param redirectConfigurations = [
-  {
-    name: 'httpRedirect80'
-    properties: {
-      includePath: true
-      includeQueryString: true
-      redirectType: 'Permanent'
-      requestRoutingRules: [
-        {
-          id: '${varAppGWExpectedResourceID}/requestRoutingRules/appgw01-rule'
-        }
-      ]
-      targetListener: {
-        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
-      }
-    }
-  }
+  // {
+  //   name: 'httpRedirect80'
+  //   properties: {
+  //     includePath: true
+  //     includeQueryString: true
+  //     redirectType: 'Permanent'
+  //     requestRoutingRules: [
+  //       {
+  //         id: '${varAppGWExpectedResourceID}/requestRoutingRules/appgw01-rule'
+  //       }
+  //     ]
+  //     targetListener: {
+  //       id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
+  //     }
+  //   }
+  // }
 ]
