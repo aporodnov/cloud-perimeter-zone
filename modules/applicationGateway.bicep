@@ -45,6 +45,8 @@ param backendHttpSettingsCollection array
 param requestRoutingRules array
 param httpListeners array
 param sslCertificates array
+param probes array
+param redirectConfigurations array
 
 module ManagedIdentityRBACSub 'br/public:avm/res/authorization/role-assignment/sub-scope:0.1.0' = {
   name: 'NetContributorRBACForMI'
@@ -94,12 +96,14 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
     backendHttpSettingsCollection: backendHttpSettingsCollection
     requestRoutingRules: requestRoutingRules
     httpListeners: httpListeners
+    redirectConfigurations: redirectConfigurations
     managedIdentities: {
       userAssignedResourceIds: [
         keyVault.outputs.managedIdentityResourceId
       ]
     }
     sslCertificates: sslCertificates
+    probes: probes
     roleAssignments: [
       {
         name: guid('Contributor ${keyVault.outputs.managedIdentityResourceId}')

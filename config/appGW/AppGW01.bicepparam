@@ -103,7 +103,9 @@ param backendHttpSettingsCollection = [
       pickHostNameFromBackendAddress: false
       hostname: 'waf.today'
       requestTimeout: 30
-
+      probe: {
+        id: '${varAppGWExpectedResourceID}/probes/privateVMhttpSettingProbe'
+      }
     }
   }
 ]
@@ -214,11 +216,52 @@ param httpListeners = [
   }
 ]
 
+param probes = [
+  {
+    name: 'privateVMhttpSettingProbe'
+    properties: {
+      host: '10.0.0.4'
+      interval: 60
+      match: {
+        statusCodes: [
+          '200'
+          '401'
+        ]
+      }
+      path: '/'
+      pickHostNameFromBackendHttpSettings: false
+      protocol: 'Http'
+      timeout: 15
+      unhealthyThreshold: 5
+      minServers: 1
+    }
+  }
+]
+
 param sslCertificates = [
   {
     name: 'wafToday'
     properties: {
       keyVaultSecretId: 'https://kvlt231231.vault.azure.net/secrets/wafToday/0e8132aacdf147a2a02b730ee05b3e6a' 
+    }
+  }
+]
+
+param redirectConfigurations = [
+  {
+    name: 'httpRedirect80'
+    properties: {
+      includePath: true
+      includeQueryString: true
+      redirectType: 'Permanent'
+      requestRoutingRules: [
+        {
+          id: '${varAppGWExpectedResourceID}/requestRoutingRules/appgw01-rule'
+        }
+      ]
+      targetListener: {
+        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
+      }
     }
   }
 ]
