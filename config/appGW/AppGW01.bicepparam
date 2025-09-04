@@ -101,7 +101,9 @@ param backendHttpSettingsCollection = [
       cookieBasedAffinity: 'Disabled'
       protocol: 'Https'
       pickHostNameFromBackendAddress: false
+      hostname: 'waf.today'
       requestTimeout: 30
+
     }
   }
 ]
