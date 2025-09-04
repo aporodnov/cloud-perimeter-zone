@@ -61,6 +61,12 @@ param frontendPorts = [
       port: 80
     }
   }
+  {
+    name: 'appgw01-feport443'
+    properties: {
+      port: 443
+    }
+  }
 ]
 
 param backendAddressPools = [
@@ -81,11 +87,20 @@ param backendAddressPools = [
 
 param backendHttpSettingsCollection = [
   {
-    name: 'appgw01-behttpsetting'
+    name: 'appgw01-behttp-setting'
     properties: {
       port: 80
       protocol: 'Http'
       cookieBasedAffinity: 'Disabled'
+    }
+  }
+  {
+    name: 'appgw01-behttps-settings'
+    properties: {
+      port: 443
+      cookieBasedAffinity: 'Disabled'
+      pickHostNameFromBackendAddress: false
+      requestTimeout: 30
     }
   }
 ]
@@ -100,7 +115,7 @@ param requestRoutingRules = [
         id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
       }
       backendHttpSettings: {
-        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttpsetting'
+        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttp-setting'
       }
       httpListener: {
         id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener'
@@ -116,10 +131,28 @@ param requestRoutingRules = [
         id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
       }
       backendHttpSettings: {
-        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttpsetting'
+        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttps-setting'
       }
       httpListener: {
         id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener-private'
+      }
+    }
+  }
+  //Only use this if you already have SSL certificate configured for App Gateway!
+  //SSL encryption example:
+  {
+    name: 'appgw01-443-rule'
+    properties: {
+      ruleType: 'Basic'
+      priority: 300
+      backendAddressPool: {
+        id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
+      }
+      backendHttpSettings: {
+        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttps-setting'
+      }
+      httpListener: {
+        id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener443-public'
       }
     }
   }
@@ -153,6 +186,27 @@ param httpListeners = [
       } 
       protocol: 'Http'
       hostNames: []
+    }
+  }
+  //Only use this if you already have SSL certificate configured for App Gateway!
+  //End to End SSL encryption example:
+    {
+    name: 'appgw01-listener443-public'
+    properties: {
+      frontendIPConfiguration: {
+        id: '${varAppGWExpectedResourceID}/frontendIPConfigurations/public'
+      }
+      frontendPort: {
+        id: '${varAppGWExpectedResourceID}/frontendPorts/appgw01-feport443'
+      } 
+      protocol: 'Https'
+      hostNames: [
+        'waf.today'
+        'www.waf.today'
+      ]
+      sslCertificate: {
+        id: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/appgw01-rg/providers/Microsoft.Network/applicationGateways/appgw01/sslCertificates/wafToday'
+      }
     }
   }
 ]

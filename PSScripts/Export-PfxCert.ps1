@@ -28,4 +28,4 @@ $PlainPwd = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
 # Merge certificate and key into PFX using certutil
 certutil -mergePFX -p "$PlainPwd,$PlainPwd" $CertPath $PfxPath
 
-Write-Host "`n✅ PFX exported to: $PfxPath"
+Write-Host "PFX exported to: $PfxPath"
