@@ -218,9 +218,9 @@ param httpListeners = [
 
 param probes = [
   {
-    name: 'privateVMhttpSettingProbe'
+    name: 'httpsSettingProbe'
     properties: {
-      host: '10.0.0.4'
+      host: 'waf.today'
       interval: 60
       match: {
         statusCodes: [
@@ -230,7 +230,7 @@ param probes = [
       }
       path: '/'
       pickHostNameFromBackendHttpSettings: false
-      protocol: 'Http'
+      protocol: 'Https'
       timeout: 15
       unhealthyThreshold: 5
       minServers: 1
