@@ -133,7 +133,7 @@ param requestRoutingRules = [
         id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
       }
       backendHttpSettings: {
-        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttps-setting'
+        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttp-setting'
       }
       httpListener: {
         id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener-private'
