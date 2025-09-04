@@ -99,6 +99,7 @@ param backendHttpSettingsCollection = [
     properties: {
       port: 443
       cookieBasedAffinity: 'Disabled'
+      protocol: 'Https'
       pickHostNameFromBackendAddress: false
       requestTimeout: 30
     }
