@@ -116,14 +116,11 @@ param requestRoutingRules = [
     properties: {
       ruleType: 'Basic'
       priority: 200
-      backendAddressPool: {
-        id: '${varAppGWExpectedResourceID}/backendAddressPools/appgw01-bepool'
-      }
-      backendHttpSettings: {
-        id: '${varAppGWExpectedResourceID}/backendHttpSettingsCollection/appgw01-behttp-setting'
-      }
       httpListener: {
         id: '${varAppGWExpectedResourceID}/httpListeners/appgw01-listener'
+      }
+      redirectConfiguration: {
+        id: '${varAppGWExpectedResourceID}/redirectConfigurations/httpRedirect80'
       }
     }
   }
