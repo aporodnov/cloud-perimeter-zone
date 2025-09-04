@@ -104,7 +104,7 @@ param backendHttpSettingsCollection = [
       hostname: 'waf.today'
       requestTimeout: 30
       probe: {
-        id: '${varAppGWExpectedResourceID}/probes/privateVMhttpSettingProbe'
+        id: '${varAppGWExpectedResourceID}/probes/httpsSettingProbe'
       }
     }
   }
