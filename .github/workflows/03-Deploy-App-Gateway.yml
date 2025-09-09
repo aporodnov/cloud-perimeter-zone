@@ -4,7 +4,7 @@
 # Supports deployment to subscription or resource group scopes.
 # Handles multiple stacks, and environment selection.
 #------------------------------------------------------------------------------
-name: "2 - Deploy App Gateway into Stack"
+name: "3 - Deploy App Gateway into Stack"
 
 on: # yamllint disable-line rule:truthy
   # Allows you to run this workflow manually from the Actions tab
