@@ -1,38 +1,65 @@
 using '../../templates/application-gateway/applicationGateway.bicep'
 
-param RGName = 'appgw01-rg'
+// Resource Group where Application Gateway, KeyVault, Managed Identity will be deployed. 
+// Deployment stack will also manage RBAC assignments
+param resourceGroupName = 'appgw01-rg'
 param location = 'canadacentral'
-param PubIPName = 'appgw01-pip'
+
+param tags = {
+  SoluitonName: 'SolutionName'
+}
+
+// Application Gateway Name.
 param AppGWName = 'appgw01'
+
+// Public IP for Front End load balancer configuration.
+param PubIPName = 'appgw01-pip'
+
+// Managed Identity to managed load balancer and a key vault assosiated with it.
 param managedIdentityName = 'CertManagerSPN'
 
+
+//KeyVault prefix name that will be used to generate the actual name
+//Sample of the actual name: 'keyvaultf4dw'
+//KeyVault has to be a unique name and can only contain lower case letters and numbers
 var keyVaultPrefix = 'kvlt'
 
+//do not modify this part
 var keyVaultUniqueString = uniqueString(keyVaultPrefix)
 @maxLength(23)
 param keyVaultName = '${keyVaultPrefix}${substring(keyVaultUniqueString, 0, 6)}'
 
+// ID of the subnet where private endpoint for a key vault will be configured
+param PrivateEndpointsubnetResourceId = '/subscriptions/${varSubscriptionID}/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/privateEndpoints-snet'
 
-param WAFPolicyResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/AppGW01-rg/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/waf-policy01'
-param PrivateEndpointsubnetResourceId = '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/privateEndpoints-snet'
+// THe main WAF Policy to be assosiated with an Application Gateway instance
+var varWAFPolicyName = 'waf-policy01'
 
-var varAppGWName = AppGWName
+// This is a param for waf policy resource id, if it is in the same resource group as an app gateway, ignore this parameter.
+param WAFPolicyResourceId = '/subscriptions/${varSubscriptionID}/resourceGroups/${varRGName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/${varWAFPolicyName}'
+
+// Input subscription ID where stack will be deployed. This variable will be used to form some of the required resource IDs in this param file
 var varSubscriptionID = 'f638c48a-5d9a-44cc-ae87-de50507a6090'
-var varRGName = RGName
+
+// do not modify those variables
+var varAppGWName = AppGWName
+var varRGName = resourceGroupName
 var varPubIPName = PubIPName
 var varAppGWExpectedResourceID = '/subscriptions/${varSubscriptionID}/resourceGroups/${varRGName}/providers/Microsoft.Network/applicationGateways/${varAppGWName}'
 
+// main agw ip config and subnet where it will be deployed. Input both values
 param gatewayIPConfigurations = [
   {
     name: 'appgw01-gwip'
     properties: {
       subnet: {
-        id: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/appGateways-snet'
+        id: '/subscriptions/${varSubscriptionID}/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/appGateways-snet'
       }
     }
   }
 ]
 
+// agw can have combination of two or one frontend ip configs.
 param frontendIPConfigurations = [
   {
     name: 'public'

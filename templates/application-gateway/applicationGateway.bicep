@@ -1,11 +1,13 @@
 targetScope = 'subscription'
 
-param RGName string
+param resourceGroupName string
 param location string
+param tags object
 
 resource RG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
-  name: RGName
+  name: resourceGroupName
   location: location
+  tags: tags
 }
 
 param PubIPName string
