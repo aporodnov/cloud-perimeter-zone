@@ -93,15 +93,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ steps.stack-deploy-params.outputs.subscriptionId }}
 
-    #   - name: Create resource group
-    #     if: steps.stack-deploy-params.outputs.scope == 'resourceGroup'
-    #     uses: BCHealth-ca/bchealth-azure-alz-cicd-shared-library/actions/create-resource-group@main
-    #     id: resource-group
-    #     with:
-    #       name: ${{ steps.stack-deploy-params.outputs.resourceGroupName }}
-    #       location: ${{ steps.stack-deploy-params.outputs.location }}
-    #       tags: ${{ steps.deploy-vars.outputs.azuredeploy-config-file }}
-
       - name: Deploy stack
         uses: azure/bicep-deploy@v2
         with:
