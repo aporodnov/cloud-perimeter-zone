@@ -107,7 +107,7 @@ jobs:
         with:
           type: deploymentStack
           operation: create
-          name: "${{ matrix.stack-name }}-${{ needs.stack-matrix.outputs.environment }}"
+          name: "${{ matrix.stack-name }}-agw-${{ needs.stack-matrix.outputs.environment }}"
           description: "Stack '${{ matrix.stack-name }}' deployed to '${{ needs.stack-matrix.outputs.environment }}'."
           location: ${{ steps.stack-deploy-params.outputs.location }}
           scope: ${{ steps.stack-deploy-params.outputs.scope }}
