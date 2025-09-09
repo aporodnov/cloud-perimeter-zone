@@ -61,7 +61,7 @@ jobs:
         id: deploy-vars
         run: |
           echo "azuredeploy-config-file=./config/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.config.json" >> $GITHUB_OUTPUT
-          echo "stack-waf-parameters-file=./config/${{ matrix.stack-name }}/azuredeploy.waf.${{ needs.stack-matrix.outputs.environment }}.bicepparam" >> $GITHUB_OUTPUT
+          echo "stack-parameters-file=./config/${{ matrix.stack-name }}/azuredeploy.waf.${{ needs.stack-matrix.outputs.environment }}.bicepparam" >> $GITHUB_OUTPUT
         # echo "azuredeploy-config-file=./devops/stacks/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.config.json" >> $GITHUB_OUTPUT
         # echo "stack-parameters-file=./devops/stacks/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.bicepparam" >> $GITHUB_OUTPUT
 
