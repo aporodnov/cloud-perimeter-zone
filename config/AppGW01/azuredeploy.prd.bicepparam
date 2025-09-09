@@ -18,28 +18,35 @@ param PubIPName = 'appgw01-pip'
 // Managed Identity to managed load balancer and a key vault assosiated with it.
 param managedIdentityName = 'CertManagerSPN'
 
+// Managed Identity Object (principal) ID
+param managedIdentityPrincipalId = 'e795c154-aeb7-4be4-be88-94f853cf8e94'
+
+//do not modify this part
+var varmanagedIdentityName = managedIdentityName
+param managedIdentityResourceID = '/subscriptions/${varSubscriptionID}/resourceGroups/${varRGName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/${varmanagedIdentityName}'
+
 
 //KeyVault prefix name that will be used to generate the actual name
 //Sample of the actual name: 'keyvaultf4dw'
 //KeyVault has to be a unique name and can only contain lower case letters and numbers
-var keyVaultPrefix = 'kvlt'
+// var keyVaultPrefix = 'kvlt'
 
-//do not modify this part
-var keyVaultUniqueString = uniqueString(keyVaultPrefix)
-@maxLength(23)
-param keyVaultName = '${keyVaultPrefix}${substring(keyVaultUniqueString, 0, 6)}'
+// //do not modify this part
+// var keyVaultUniqueString = uniqueString(keyVaultPrefix)
+// @maxLength(23)
+// param keyVaultName = '${keyVaultPrefix}${substring(keyVaultUniqueString, 0, 6)}'
 
-// ID of the subnet where private endpoint for a key vault will be configured
-param PrivateEndpointsubnetResourceId = '/subscriptions/${varSubscriptionID}/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/privateEndpoints-snet'
+// // ID of the subnet where private endpoint for a key vault will be configured
+// param PrivateEndpointsubnetResourceId = '/subscriptions/${varSubscriptionID}/resourceGroups/perimeter-network-rg/providers/Microsoft.Network/virtualNetworks/perimeter-zone-vnet/subnets/privateEndpoints-snet'
+
+// Input subscription ID where stack will be deployed. This variable will be used to form some of the required resource IDs in this param file
+var varSubscriptionID = 'f638c48a-5d9a-44cc-ae87-de50507a6090'
 
 // THe main WAF Policy to be assosiated with an Application Gateway instance
 var varWAFPolicyName = 'waf-policy01'
 
 // This is a param for waf policy resource id, if it is in the same resource group as an app gateway, ignore this parameter.
 param WAFPolicyResourceId = '/subscriptions/${varSubscriptionID}/resourceGroups/${varRGName}/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/${varWAFPolicyName}'
-
-// Input subscription ID where stack will be deployed. This variable will be used to form some of the required resource IDs in this param file
-var varSubscriptionID = 'f638c48a-5d9a-44cc-ae87-de50507a6090'
 
 // do not modify those variables
 var varAppGWName = AppGWName

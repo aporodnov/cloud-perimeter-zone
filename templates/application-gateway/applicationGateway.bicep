@@ -21,20 +21,19 @@ module PublicIP 'publicIPaddress.bicep' = {
   }
 }
 
-param PrivateEndpointsubnetResourceId string
-// param storageAccountName string
+// param PrivateEndpointsubnetResourceId string
 
-param keyVaultName string
-param managedIdentityName string
-module keyVault '../key-vault/keyVault.bicep' = {
-  scope: RG
-  params: {
-    location: location
-    keyVaultName: keyVaultName
-    managedIdentityName: managedIdentityName
-    PrivateEndpointsubnetResourceId: PrivateEndpointsubnetResourceId
-  }
-}
+// param keyVaultName string
+// param managedIdentityName string
+// module keyVault '../key-vault/keyVault.bicep' = {
+//   scope: RG
+//   params: {
+//     location: location
+//     keyVaultName: keyVaultName
+//     managedIdentityName: managedIdentityName
+//     PrivateEndpointsubnetResourceId: PrivateEndpointsubnetResourceId
+//   }
+// }
 
 param AppGWName string
 param WAFPolicyResourceId string
@@ -50,11 +49,15 @@ param probes array
 param redirectConfigurations array
 param diagnosticSettings array
 
+param managedIdentityName string
+param managedIdentityPrincipalId string
+param managedIdentityResourceID string
+
 module ManagedIdentityRBACSub 'br/public:avm/res/authorization/role-assignment/sub-scope:0.1.0' = {
   name: 'NetContributorRBACForMI'
   params: {
     name: guid('Network-Contributor-${managedIdentityName}')
-    principalId: keyVault.outputs.managedIdentityPrincipalId
+    principalId: managedIdentityPrincipalId
     roleDefinitionIdOrName: '4d97b98b-1d4f-4787-a291-c67834d212e7'
     principalType: 'ServicePrincipal'
   }
@@ -65,7 +68,7 @@ module ManagedIdentityRBACRG 'br/public:avm/res/authorization/role-assignment/rg
     scope: RG
     params: {
       name: guid('Managed-Identity-Operator-${managedIdentityName}')
-      principalId: keyVault.outputs.managedIdentityPrincipalId
+      principalId: managedIdentityPrincipalId
       roleDefinitionIdOrName: 'f1a07417-d97a-45cb-824c-7a7467783830'
       principalType: 'ServicePrincipal'
     }
@@ -75,9 +78,6 @@ module ManagedIdentityRBACRG 'br/public:avm/res/authorization/role-assignment/rg
 module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
   name: 'DeployAppGW'
   scope: RG
-  dependsOn: [
-    keyVault
-  ]
   params: {
     name: AppGWName
     location: location
@@ -101,7 +101,7 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
     redirectConfigurations: redirectConfigurations
     managedIdentities: {
       userAssignedResourceIds: [
-        keyVault.outputs.managedIdentityResourceId
+        managedIdentityResourceID
       ]
     }
     sslCertificates: sslCertificates
@@ -109,8 +109,8 @@ module AppGW 'br/public:avm/res/network/application-gateway:0.7.1' = {
     diagnosticSettings: diagnosticSettings
     roleAssignments: [
       {
-        name: guid('Contributor ${keyVault.outputs.managedIdentityResourceId}')
-        principalId: keyVault.outputs.managedIdentityPrincipalId
+        name: guid('Contributor-${managedIdentityName}')
+        principalId: managedIdentityPrincipalId
         roleDefinitionIdOrName: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
         principalType: 'ServicePrincipal'
       }
