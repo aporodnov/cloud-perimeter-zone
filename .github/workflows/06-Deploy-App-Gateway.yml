@@ -4,14 +4,14 @@
 # Supports deployment to subscription or resource group scopes.
 # Handles multiple stacks, and environment selection.
 #------------------------------------------------------------------------------
-name: "1 - Deploy WAF into Stack"
+name: "2 - Deploy App Gateway into Stack"
 
 on: # yamllint disable-line rule:truthy
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
       stack-names:
-        description: "A comma-separated list of WAF policy names to deploy."
+        description: "A comma-separated list of App Gateway instance names to deploy."
         required: true
         type: string
 
@@ -61,7 +61,7 @@ jobs:
         id: deploy-vars
         run: |
           echo "azuredeploy-config-file=./config/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.config.json" >> $GITHUB_OUTPUT
-          echo "stack-parameters-file=./config/${{ matrix.stack-name }}/azuredeploy.waf.${{ needs.stack-matrix.outputs.environment }}.bicepparam" >> $GITHUB_OUTPUT
+          echo "stack-parameters-file=./config/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.bicepparam" >> $GITHUB_OUTPUT
         # echo "azuredeploy-config-file=./devops/stacks/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.config.json" >> $GITHUB_OUTPUT
         # echo "stack-parameters-file=./devops/stacks/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.bicepparam" >> $GITHUB_OUTPUT
 
