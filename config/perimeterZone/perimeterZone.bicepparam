@@ -1,4 +1,4 @@
-using '../../modules/perimeterZone.bicep'
+using '../../templates/network/perimeterZone.bicep'
 
 param resourceGroupNetworkName = 'perimeter-network-rg'
 param locationRegion = 'canadacentral'
@@ -33,15 +33,13 @@ param subnets = [
 		name: 'nva-snet'
 		addressPrefix: '192.168.100.224/28'
 	}
-	// {
-	// 	name: 'containers-snet'
-	// 	addressPrefix: '192.168.100.240/29'
-	// 	delegation: 'Microsoft.ContainerInstance/containerGroups'
-
-	// }
 	{
-		name: 'test-snet'
-		addressPrefix: '192.168.100.248/29'
+		name: 'admin-snet'
+		addressPrefix: '192.168.100.240/29'
 	}
+	// {
+	// 	name: 'reserved space'
+	// 	addressPrefix: '192.168.100.248/29'
+	// }
 ]
 

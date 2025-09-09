@@ -1,4 +1,4 @@
-using '../../modules/perimeterZoneHUBConn.bicep'
+using '../../templates/network/perimeterZoneHUBConn.bicep'
 
 param VWAN_RG_Name = 'AVNM-RG'
 param vHUBName = 'vHUBv2'
