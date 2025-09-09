@@ -21,7 +21,7 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory)] [string] $File,
-    [Parameter(Mandatory = $false)] [string] $SchemaFile = "./devops/templates/schemas/azuredeploy.config.schema.json"
+    [Parameter(Mandatory = $false)] [string] $SchemaFile = "./templates/schemas/azuredeploy.config.schema.json"
 )
 process {
     # Check if the azuredeploy config file exists
