@@ -1,0 +1,49 @@
+---
+#------------------------------------------------------------------------------
+# GitHub Actions workflow for deploying Azure stacks.
+# Supports deployment to subscription or resource group scopes.
+# Handles multiple stacks, and environment selection.
+#------------------------------------------------------------------------------
+name: "4 - Deploy Perimeter Network"
+
+on: # yamllint disable-line rule:truthy
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    # inputs:
+    #   stack-names:
+    #     description: "A comma-separated list of App Gateway instance names to deploy."
+    #     required: true
+    #     type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+
+  deploy:
+    name: Deploy Perimeter Network
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy stack
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deployment
+          operation: create
+          name: "Deploy-Perimeter-Network"
+          location: 'canadacentral'
+          scope: 'subscription'
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          template-file: ./templates/network/perimeterZone.bicep
+          parameters-file: ./config/perimeterZone/perimeterZone.bicepparam
