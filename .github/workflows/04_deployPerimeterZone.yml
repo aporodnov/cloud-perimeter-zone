@@ -14,8 +14,7 @@ permissions:
 jobs:
     Deploy_PerimeterLandingZone:
         runs-on: ubuntu-latest
-        outputs:
-          environment: ${{ github.ref == 'refs/heads/tst' && 'tst' || github.ref == 'refs/heads/prd' && 'prd' || github.ref == 'refs/heads/main' && 'prd' || 'dev' }}
+        environment: ${{ github.ref == 'refs/heads/tst' && 'tst' || github.ref == 'refs/heads/prd' && 'prd' || github.ref == 'refs/heads/main' && 'prd' || 'dev' }}
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v4
