@@ -1,19 +1,20 @@
-name: 2. Deploy-HUBConnectionForPerimeterLandingZone
+name: 1. Deploy-Peering-PerimeterLandingZone
 
 on:
     workflow_dispatch:
 
 env:
     LOCATION: "canadacentral"
-    SUBSCRIPTION_ID: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+    SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
 permissions:
   id-token: write
   contents: read
 
 jobs:
-    Deploy-HUBConnectionForPerimeterLandingZone:
+    Deploy_Peering_for_PerimeterLandingZone:
         runs-on: ubuntu-latest
+        environment: ${{ github.ref == 'refs/heads/tst' && 'tst' || github.ref == 'refs/heads/prd' && 'prd' || github.ref == 'refs/heads/main' && 'prd' || 'dev' }}
         steps:
             - name: Checkout Repository
               uses: actions/checkout@v4
@@ -25,23 +26,23 @@ jobs:
               with:
                 client-id: ${{ secrets.AZURE_CLIENT_ID }}
                 tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-                subscription-id: ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+                subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
             - name: Set Az Context
               uses: azure/cli@v2
               with:
                 azcliversion: latest
                 inlineScript: |
-                    az account set --subscription ${{ secrets.AZURE_CONNECTIVITY_SUBSCRIPTION_ID }}
+                    az account set --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                     az account show
 
-            - name: Deploy Perimeter Landing Zone
+            - name: Deploy Peering for Perimeter Landing Zone
               uses: azure/cli@v2
               with:
                 azcliversion: latest
                 inlineScript: |
                     az deployment sub create \
-                        --name "Deploy_vHUBConnForPerimeterLandingZone" \
+                        --name "Deploy_Peering_For_PLZ" \
                         --location $LOCATION \
-                        --template-file modules/perimeterZoneHUBConn.bicep \
-                        --parameters config/perimeterZone/perimeterZoneHUBPeering.bicepparam
+                        --template-file modules/perimeterZone.bicep \
+                        --parameters config/perimeterZone/perimeterZone.bicepparam
