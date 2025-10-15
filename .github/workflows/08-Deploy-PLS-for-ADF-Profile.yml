@@ -1,0 +1,111 @@
+---
+#------------------------------------------------------------------------------
+# GitHub Actions workflow for deploying Azure stacks.
+# Supports deployment to subscription or resource group scopes.
+# Handles multiple stacks, and environment selection.
+#------------------------------------------------------------------------------
+name: "8 - Deploy PLS for Frond Door profile'origin into Stack"
+
+on: # yamllint disable-line rule:truthy
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      stack-names:
+        description: "A comma-separated list of Front Door profile names to deploy."
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  stack-matrix:
+    name: Prepare target env and stacks
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ github.ref == 'refs/heads/tst' && 'tst' || github.ref == 'refs/heads/prd' && 'prd' || github.ref == 'refs/heads/main' && 'prd' || 'dev' }}
+      stack-list: ${{ steps.set-matrix.outputs.stack-list }}
+
+    steps:
+      - name: Set stack matrix
+        id: set-matrix
+        run: |
+          arr=$(echo "${{ inputs.stack-names }}" | awk -F',' '{for(i=1;i<=NF;i++) printf "\"%s\"%s", $i, (i<NF?",":"") }')
+          echo "stack-list=[$arr]" >> $GITHUB_OUTPUT
+
+  deploy:
+    name: Deploy ${{ matrix.stack-name }} stack
+    runs-on: ubuntu-latest
+    needs:
+      - stack-matrix
+    strategy:
+      matrix:
+        stack-name: ${{ fromJson(needs.stack-matrix.outputs.stack-list) }}
+
+    environment: ${{ needs.stack-matrix.outputs.environment }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set stack name prefix
+        id: stack-name-prefix
+        env:
+          STACK_NAME: ${{ matrix.stack-name }}
+        run: |
+          # Replace non-alphanumeric characters with underscores in the stack name
+          echo "prefix=${STACK_NAME//[^A-Za-z0-9]/_}" >> $GITHUB_OUTPUT
+
+      - name: Set deploy variables
+        id: deploy-vars
+        run: |
+          echo "azuredeploy-config-file=./config/AFD/${{ matrix.stack-name }}/azuredeploy.PLS01.${{ needs.stack-matrix.outputs.environment }}.config.json" >> $GITHUB_OUTPUT
+          echo "stack-parameters-file=./config/AFD/${{ matrix.stack-name }}/azuredeploy.PLS01.${{ needs.stack-matrix.outputs.environment }}.bicepparam" >> $GITHUB_OUTPUT
+        # echo "azuredeploy-config-file=./devops/stacks/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.config.json" >> $GITHUB_OUTPUT
+        # echo "stack-parameters-file=./devops/stacks/${{ matrix.stack-name }}/azuredeploy.${{ needs.stack-matrix.outputs.environment }}.bicepparam" >> $GITHUB_OUTPUT
+
+      - name: Validate stack azuredeploy config file
+        id: stack-deploy-params
+        env:
+          CONFIG_FILE: ${{ steps.deploy-vars.outputs.azuredeploy-config-file }}
+        shell: pwsh
+        continue-on-error: false # Fail the job if the config file is invalid
+        run: ./scripts/Load-DeployConfig.ps1 -File $Env:CONFIG_FILE
+
+      - name: Validate stack params file exists
+        env:
+          PARAMS_FILE: ${{ steps.deploy-vars.outputs.stack-parameters-file }}
+        shell: pwsh
+        continue-on-error: false # Fail the job if the config file is invalid
+        run: |
+          # Check if the azuredeploy params file exists
+          if (-not (Test-Path -Path $Env:PARAMS_FILE -PathType Leaf)) {
+              Write-Error "Error: File '$Env:PARAMS_FILE' not found. Failing job."
+              exit 1 # Exit with a non-zero status to indicate failure
+          }
+          Write-Host "File '$Env:PARAMS_FILE' found. Continuing job." -ForegroundColor Green
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ steps.stack-deploy-params.outputs.subscriptionId }}
+
+      - name: Deploy stack
+        uses: azure/bicep-deploy@v2
+        with:
+          type: deploymentStack
+          operation: create
+          name: "${{ matrix.stack-name }}-agw-${{ needs.stack-matrix.outputs.environment }}"
+          description: "Stack '${{ matrix.stack-name }}' deployed to '${{ needs.stack-matrix.outputs.environment }}'."
+          location: ${{ steps.stack-deploy-params.outputs.location }}
+          scope: ${{ steps.stack-deploy-params.outputs.scope }}
+          subscription-id: ${{ steps.stack-deploy-params.outputs.subscriptionId }}
+          resource-group-name: ${{ steps.stack-deploy-params.outputs.scope == 'resourceGroup' && steps.stack-deploy-params.outputs.resourceGroupName || null }} # Only set if scope is resourceGroup
+          parameters-file: ${{ steps.deploy-vars.outputs.stack-parameters-file }}
+          action-on-unmanage-resources: detach
+          action-on-unmanage-resourcegroups: detach
+          deny-settings-mode: denyDelete
+          deny-settings-excluded-principals: ${{ secrets.AZURE_CLIENT_OBJECT_ID }}
