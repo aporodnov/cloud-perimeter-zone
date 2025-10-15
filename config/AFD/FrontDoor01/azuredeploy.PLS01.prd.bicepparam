@@ -1,6 +1,6 @@
 using '../../../templates/afd/privateLink.bicep'
 
-param PLSRGName = 'PRivateLB-PLS-RG'
+param PLSRGName = 'AFD-RG'
 param location = 'canadacentral'
 
 param tags = {

@@ -1,6 +1,6 @@
 using '../../../templates/afd/afdProfile.bicep'
 
-param ResourceGroupName = 'CDN-RG'
+param ResourceGroupName = 'AFD-RG'
 
 //This is a location for Resource Group only, since FrontDoor instance is a global resource
 param location = 'canadacentral'
