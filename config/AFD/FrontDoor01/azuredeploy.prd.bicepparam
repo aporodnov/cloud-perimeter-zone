@@ -124,7 +124,7 @@ param originGroups = [
           privateLinkLocation: 'canadacentral'
           requestMessage: 'AFD-PrivateLB01-PLS'
           privateLink: {
-            id: '/subscriptions/ccf12f80-8b9f-4db9-a5d2-0e8e6b7785a9/resourceGroups/PRivateLB-PLS-RG/providers/Microsoft.Network/privateLinkServices/PrivateLB01-PLS'
+            id: '/subscriptions/ccf12f80-8b9f-4db9-a5d2-0e8e6b7785a9/resourceGroups/AFD-RG/providers/Microsoft.Network/privateLinkServices/PrivateLB01-PLS'
           }
         }
       }
@@ -193,7 +193,7 @@ param securityPolicies = [
       {
         domains: [
           {
-            id: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/CDN-RG/providers/Microsoft.Cdn/profiles/CDN-Org-01/afdEndpoints/afd-endpoint-app2'
+            id: '/subscriptions/f638c48a-5d9a-44cc-ae87-de50507a6090/resourceGroups/AFD-RG/providers/Microsoft.Cdn/profiles/CDN-Org-01/afdEndpoints/afd-endpoint-app2'
           }
         ]
         patternsToMatch: [

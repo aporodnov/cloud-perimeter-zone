@@ -11,7 +11,7 @@ on: # yamllint disable-line rule:truthy
   workflow_dispatch:
     inputs:
       stack-names:
-        description: "A comma-separated list of Front Door profile names to deploy."
+        description: "A comma-separated list of Private Link Services for Front Door profile to deploy."
         required: true
         type: string
 
